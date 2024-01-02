@@ -878,3 +878,1224 @@
     </section>
 </body>
 </html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Calendar</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: darkblue;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 24px;
+        }
+
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        th:hover, td:hover {
+            background-color: #f0f0f0;
+        }
+
+        .day-number {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        .event {
+            background-color: #3498db;
+            color: #fff;
+            padding: 5px;
+            margin-bottom: 2px;
+            border-radius: 5px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .event:nth-child(2n) {
+            background-color: #e74c3c;
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            border-radius: 5px;
+            z-index: 1;
+        }
+
+        .popup-content {
+            text-align: center;
+        }
+
+        .close-btn {
+            cursor: pointer;
+            color: #333;
+            font-size: 20px;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+       Event Calendar
+    </header>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Monday</th>
+                <th>Tuesday</th>
+                <th>Wednesday</th>
+                <th>Thursday</th>
+                <th>Friday</th>
+                <th>Saturday</th>
+                <th>Sunday</th>
+            </tr>
+        </thead>
+        <tbody id="calendar-body"></tbody>
+    </table>
+
+    <div class="popup" id="popup">
+        <div class="popup-content" id="popup-content">
+            <span class="close-btn" onclick="closePopup()">&times;</span>
+            <p id="event-description"></p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarBody = document.getElementById('calendar-body');
+
+            function getDaysInMonth(month, year) {
+                return new Date(year, month + 1, 0).getDate();
+            }
+
+            function openPopup(eventDescription) {
+                var popup = document.getElementById('popup');
+                var popupContent = document.getElementById('popup-content');
+                var eventDescriptionElement = document.getElementById('event-description');
+
+                eventDescriptionElement.textContent = eventDescription;
+
+                popup.style.display = 'block';
+            }
+
+            function closePopup() {
+                var popup = document.getElementById('popup');
+                popup.style.display = 'none';
+            }
+
+            function generateCalendar(month, year) {
+                calendarBody.innerHTML = '';
+
+                var daysInMonth = getDaysInMonth(month, year);
+                var dayCount = 1;
+
+                var dailyEvents = {
+                    1: [{ title: 'cookkhas-sinegastro', description: 'The dishes in my film will be given to the audience. Location: Kadir has fener hall. Time: January 1 at 16.00' }, { title: 'Event 2', description: 'Detailed description for Event 2.' }],
+                    2: [{ title: 'Event 3', description: 'Detailed description for Event 3.' }, { title: 'Event 4', description: 'Detailed description for Event 4.' }],
+                };
+
+                for (var i = 0; i < 6; i++) {
+                    var row = document.createElement('tr');
+
+                    for (var j = 0; j < 7; j++) {
+                        var cell = document.createElement('td');
+
+                        if (i === 0 && j < new Date(year, month, 1).getDay()) {
+                            cell.textContent = '';
+                        } else if (dayCount > daysInMonth) {
+                            cell.textContent = '';
+                        } else {
+                            var dayNumber = document.createElement('div');
+                            dayNumber.className = 'day-number';
+                            dayNumber.textContent = dayCount;
+
+                            cell.appendChild(dayNumber);
+
+                            var eventsForDay = dailyEvents[dayCount];
+                            if (eventsForDay) {
+                                eventsForDay.forEach(function(event, index) {
+                                    var eventElement = document.createElement('div');
+                                    eventElement.className = 'event';
+                                    eventElement.textContent = event.title;
+                                    eventElement.style.backgroundColor = index % 2 === 0 ? '#3498db' : '#e74c3c';
+                                    eventElement.addEventListener('click', function() {
+                                        openPopup(event.description);
+                                    });
+                                    cell.appendChild(eventElement);
+                                });
+                            }
+
+                            dayCount++;
+                        }
+
+                        row.appendChild(cell);
+                    }
+
+                    calendarBody.appendChild(row);
+                }
+            }
+
+            generateCalendar(0, new Date().getFullYear()); // Başlangıç olarak Ocak ayını göster
+
+        });
+    </script>
+
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Log In</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .login-container {
+      background-color: #fff;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 300px;
+      text-align: center;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: darkblue;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+      <header>
+        <img src="kadir_logo.png" alt="Kadir Has Üniversitesi Logo" style="width:300px;height:100px;" >
+        <h1>Kadir Has University Clubs</h1>
+        
+<header>
+        
+       </header>
+
+<div class="login-container">
+  <h2>Student Login</h2>
+  <form id="loginForm">
+    <input type="text" id="schoolId" placeholder="Enter your school ID" required>
+       <label for="password">Password:</label>
+    <input type="password" id="password" placeholder="Enter your password" name="password">
+    <button type="button" onclick="login()">Log In</button>
+  </form>
+</div>
+
+<script>
+  function login() {
+    var schoolId = document.getElementById('schoolId').value;
+
+    if (isValidSchoolId(schoolId)) {
+      window.location.href = 'content-page.html'; // Replace with your actual content page URL
+    } else {
+      alert('Invalid school ID. Please try again.');
+    }
+  }
+
+  function isValidSchoolId(schoolId) {
+    return schoolId.trim() !== '';
+  }
+</script>
+
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Club Question Forum</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 20px;
+            background-color: darkblue;
+            color: white;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 20px auto;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 200px;
+            resize: none;
+        }
+
+        .question {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        #successMessage {
+            color: darkblue;
+            font-weight: bold;
+        }
+
+        button {
+            background-color: darkblue;
+            color: white; 
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h2>Club Question Forum</h2>
+    </header>
+
+    <main>
+        <form id="questionForm">
+            <label for="question">You can ask a question about the clubs:</label>
+            <textarea id="question" name="question" required></textarea>
+            <br>
+            <button type="submit"><b>Submit Your Question!</b></button>
+        </form>
+
+        <div id="successMessage"></div>
+
+    </main>
+
+    <script>
+        document.getElementById('questionForm').addEventListener('submit', function (event) {
+            document.getElementById('successMessage').innerText = 'We will get back to you regarding your question as soon as possible!';
+            event.preventDefault(); // Formun sayfayı yeniden yüklemesini engellemek için
+        });
+    </script>
+</body>
+</html>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Club Activities Evaluation</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: darkblue;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 24px;
+        }
+
+        main {
+            width: 80%;
+            margin: 20px auto;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .activity {
+            margin-bottom: 30px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 20px;
+        }
+
+        .activity h2 {
+            color: #333;
+        }
+
+        .activity p {
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+        .rating {
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .rating label {
+            margin-right: 10px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .rating input {
+            width: 30px;
+            height: 30px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            text-align: center;
+            margin-right: 10px;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        button {
+            padding: 15px;
+            background-color: darkblue;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        Club Activities Evaluation
+    </header>
+
+    <main>
+        <div class="activity">
+            <h2>cookkhas-sinegastro</h2>
+            <p>The dishes in my film will be given to the audience. Location: Kadir has fener hall. Time: January 1 at 16.00.</p>
+            <div class="rating">
+                <label for="rating1">Rating 1 to 10:</label>
+                <input type="number" id="rating1" name="rating1" min="1" max="10">
+            </div>
+            <textarea placeholder="Provide your feedback"></textarea>
+        </div>
+
+        <div class="activity">
+            <h2>Club Activity 2</h2>
+            <p>Description of the activity...</p>
+            <div class="rating">
+                <label for="rating2">Rating:</label>
+                <input type="number" id="rating2" name="rating2" min="1" max="5">
+            </div>
+            <textarea placeholder="Provide your feedback"></textarea>
+        </div>
+
+        <button onclick="submitFeedback()">Submit Feedback</button>
+    </main>
+
+    <script>
+        function submitFeedback() {
+            alert('Feedback submitted successfully!');
+        }
+    </script>
+   
+
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kadir Has University Clubs</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #001f3f; /* Dark Blue */
+            color: #fff;
+        }
+
+        header {
+            background-color: #005a8c; /* Darker Blue */
+            color: white;
+            text-align: center;
+            padding: 1em;
+        }
+
+        .club {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 20px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .club img {
+            width: 100px;
+            border-radius: 50%;
+            margin-bottom: 15px;
+            filter: brightness(1.5); /* Enhance contrast */
+        }
+
+        .club h3 {
+            color: #333;
+        }
+
+        .club ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .club ul li {
+            margin: 10px 0;
+        }
+
+        footer {
+            background-color: #005a8c; /* Darker Blue */
+            color: white;
+            text-align: center;
+            padding: 1em;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        body::before {
+            content: "";
+            background-image: url('kadirhas_logo.png'); /* Add the path to your Kadir Has University logo */
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.2; /* Adjust opacity as needed */
+            z-index: -1;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Kadir Has University Clubs</h1>
+    </header>
+
+<!-- Aktivizm Kulübü -->
+<div class="club">
+    <img src="aktivizm.png" alt="Aktivizm Kulübü Logo">
+    <h3>Activism Club</h3>
+    <p>Connection Addresses</p>
+    <ul>
+        <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSfbMQGrVKu4MgDmlfqtK7I976A2vAvWYYEu5vQJomDAIn09jQ/viewform">2023-2024 Activism Member Form</a></li>
+        <li><a href="https://www.instagram.com/khasactivism/?utm_medium=copy_link">Instagram</a></li>
+        <li><a href="https://twitter.com/khasactivism">Twitter</a></li>
+        <li><a href="https://www.linkedin.com/company/khas-aktivizm-kul%C3%BCb%C3%BC/">LinkedIn</a></li>
+        
+      
+    </ul>
+</div>
+
+
+<div class="club">
+    <img src="atatürk.png" alt="Atatürkçü Gençlik Kulübü Logo">
+    <h3>Atatürkçü Gençlik Kulübü</h3>
+    <p>Connection Addresses</p>
+    <ul>
+        <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSeH4rxyMsmL1JzLHcrJhyx0rAoD965UNFO818N65ZqHcpguFg/viewform">2023-2024 Atatürkçü Gençlik Kulübü Üyelik Formu</a></li>
+        <li><a href="https://www.instagram.com/khasagk/">Instagram</a></li>
+        <li><a href="https://twitter.com/adkkadirhas">Twitter</a></li>
+        <!-- Kulübe ait bağlantıları ekleyin -->
+    </ul>
+</div>
+
+<!-- Diğer kulüpleri ekleyin -->
+<div class="club">
+            <img src="cevre.png" alt="Çevre ve Sıfır Atık Kulübü Logo">
+            <h3>Environment and Zero Waste Club</h3>
+  <p>Connection Addresses</p>
+    <ul>
+        <li><a href="https://forms.office.com/Pages/ResponsePage.aspx?id=sg_q8jR9v06eU2TsQSiNu50PCvVwMblFjgv7YcecRlRUM1FEREZGRkowQUVEQUg2UExKQ0xUU0I4Vi4u">2023-2024 Environment and Zero Waste Club Member Form </a></li>
+        <li><a href="https://www.instagram.com/khascevresifiratik/">Instagram</a></li>
+        <li><a href="https://www.linkedin.com/in/khas-%C3%A7evre-ve-s%C4%B1f%C4%B1r-at%C4%B1k-kul%C3%BCb%C3%BC-43a817292/?originalSubdomain=tr">LinkedIn</a></li>
+        <!-- Kulübe ait bağlantıları ekleyin -->
+    </ul>
+</div>
+<div class="club">
+            <img src="cinsiyet.png" alt="Cinsiyet Kimliği ve Cinsel Yönelim Çalışmaları Kulübü Logo">
+            <h3>Gender Identity and Sexual Orientation Studies Club</h3>
+  <p>Connection Addresses</p>
+    <ul>
+        <li><a href="https://docs.google.com/forms/d/1K0mk4PxPu_cvt0UaIsxd-asf_LYseNIPm-sxfkekQTs/viewform?ts=651860bf&edit_requested=true">2023-2024 Gender Identity and Sexual Orientation Studies Club Member Form </a></li>
+        <li><a href="https://www.instagram.com/khas_plus/">Instagram</a></li>
+        <li><a href="https://twitter.com/khas_plus">Twitter</a></li>
+        <!-- Kulübe ait bağlantıları ekleyin -->
+    </ul>
+</div>
+<div class="club">
+            <img src="cookhas.png" alt="cooKhas Kulübü Logo">
+            <h3>cooKhas Club</h3>
+  <p>Connection Addresses</p>
+    <ul>
+        <li><a href="https://www.instagram.com/cookhaskulup/">Instagram</a></li
+        <!-- Kulübe ait bağlantıları ekleyin -->
+    </ul>
+</div>
+<div class="club">
+            <img src="dagcilik.png" alt="Dağcılık ve Doğa Sporları Kulübü Logo">
+            <h3>Mountain Climbing and Outdoor Sports Club</h3>
+  <p>Connection Addresses</p>
+    <ul>
+        <li><a href="https://www.instagram.com/khasdak/">Instagram</a></li>
+        <li><a href="https://twitter.com/khasdak">Twitter</a></li>
+        <!-- Kulübe ait bağlantıları ekleyin -->
+    </ul>
+</div>
+<div class="club">
+            <img src="etik.png" alt="Etik ve Felsefe Kulübü Logo">
+            <h3>Ethics and Philosophy Club</h3>
+  <p>Connection Addresses</p>
+    <ul>
+        <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSfNH72gT3giCVlyAqV28Io8ioo9QLucEHymjnYCU-jEaxf1lg/viewform">2023-2024 Ethics and Philosophy Club Member Form </a></li>
+        <li><a href="https://www.instagram.com/khas.efk/">Instagram</a></li>
+        <!-- Kulübe ait bağlantıları ekleyin -->
+    </ul>
+</div>
+<div class="club">
+            <img src="feminist.png" alt="Feminist Çalışmalar Kulübü Logo">
+            <h3>Feminist Studies Club</h3>
+  <p>Connection Addresses</p>
+    <ul>
+       
+        <li><a href="https://www.instagram.com/khasfeministcalismalar/">Instagram</a></li>
+        
+        <!-- Kulübe ait bağlantıları ekleyin -->
+    </ul>
+</div>
+ <div class="club">
+            <img src="girisimci.png" alt="Girişimci İnovatif Liderler Kulübü Logo">
+            <h3>Entrepreneur Innovative Leaders Club</h3>
+    <p>Connection Addresses</p>
+    <ul>
+        <li><a href="https://chat.whatsapp.com/FW0mk75EZm43yIZWipDyTQ">2023-2024 Entrepreneur Innovative Leaders Club WhatsApp Group Link </a></li>
+        <li><a href="https://www.instagram.com/khasgilt/">Instagram</a></li>
+        <li><a href="https://twitter.com/khasgilt?t=1-Go0Xbcax4dmxipxiUJoQ&s=09">Twitter</a></li>
+        <li><a href="https://www.linkedin.com/company/gilt-akademi/mycompany/">LinkedIn</a></li>
+     
+    </ul>
+</div>
+<div class="club">
+            <img src="google.png" alt="Google Developer Student Clubs Logo">
+            <h3>Google Developer Student Club</h3>
+   <p>Connection Addresses</p>
+    <ul>
+        <li><a href="https://gdsc.community.dev/accounts/social/signup/?next=/kadir-has-university/">2023-2024 Google Developer Student Club Member Form </a></li>
+        <li><a href="https://www.instagram.com/gdsckhas">Instagram</a></li>
+        <li><a href="https://twitter.com/gdsckhas">Twitter</a></li>
+        <li><a href="https://www.linkedin.com/company/gdsc-kadir-has-university/">LinkedIn</a></li>
+      <!-- Kulübe ait bağlantıları ekleyin -->
+    </ul>
+</div>
+<div class="club">
+            <img src="hasgen.png" alt="HasGen Genetik ve Bilim Kulübü Logo">
+            <h3>HasGen Genetics and Science Club</h3>
+   <p>Connection Addresses</p>
+    <ul>
+        <li><a href="https://docs.google.com/forms/d/e/1FAIpQLScf0aqovXP7yo5wUfnHJjAr0IvgWkMwCsgpo85Kq_CeXlWJWw/viewform">2023-2024 HasGen Genetics and Science Club Member Form </a></li>
+        <li><a href="https://www.instagram.com/hasgenofficial/">Instagram</a></li>
+        <li><a href="https://twitter.com/hasgenofficial">Twitter</a></li>
+        <li><a href="https://www.linkedin.com/in/hasgen-bilim-ve-genetik-kul%C3%BCb%C3%BC-538b35231/?originalSubdomain=tr">LinkedIn</a></li>
+      <!-- Kulübe ait bağlantıları ekleyin -->
+    </ul>
+</div>
+ <div class="club">
+            <img src="hashaspati.png" alt="Hashaspati Kulübü Logo">
+            <h3>Hashaspati</h3>
+   <p>Connection Addresses</p>
+    <ul>
+        <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSckRFmfZ4KWtEWCQQq5kuSpJPBWmA0aFWuBVYyO_H1qB0abmA/closedform">2023-2024 Hashaspati Club Board of Directors Form</a></li>
+        <li><a href="https://www.instagram.com/hashaspati/">Instagram</a></li>
+        <li><a href="https://twitter.com/hashaspati">Twitter</a></li>
+        
+    </ul>
+</div>
+<div class="club">
+            <img src="havacılık.png" alt="Havacılık Kulübü Logo">
+            <h3>Aviation Club</h3>
+  <p>Connection Addresses</p>
+    <ul>
+        <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSf4Iqe3ajUr1N4bovXJR7w3VAgopdeBEot7WZwLY7cJ0Vp6RQ/viewform">2023-2024 Aviation Club Member Form</a></li>
+        <li><a href="https://www.instagram.com/havacilik.khas/?hl=en">Instagram</a></li>
+        <li><a href="https://www.linkedin.com/company/khas-havacilik-kulubu/?originalSubdomain=tr">LinkedIn</a></li>
+        
+    </ul>
+</div>
+<div class="club">
+            <img src="hukuk.png" alt="Hukuk Kulübü Logo">
+            <h3>Law Club</h3>
+   <p>Connection Addresses</p>
+    <ul>
+        <li><a href="https://www.instagram.com/khashukukkulubu/">Instagram</a></li>
+        <li><a href="https://twitter.com/KHUHukukKulubu">Twitter</a></li>
+        <li><a href="https://www.linkedin.com/company/kadirhasuniversitesihukukkulubu/?originalSubdomain=tr">LinkedIn</a></li>
+    </ul>
+</div>
+<div class="club">
+            <img src="ekonomi.png" alt="Hukuk ve Ekonomi Kulübü Logo">
+            <h3>Law and Economy Club</h3>
+  <p>Connection Addresses</p>
+    <ul>
+        
+        <li><a href="https://www.instagram.com/khaslaweco/">Instagram</a></li>
+        <li><a href="https://www.linkedin.com/posts/hukuk-ve-ekonomi-kul%C3%BCb%C3%BC-b50524224_hukuk-ve-ekonomi-kul%C3%BCb%C3%BC-olarak-bilgi-deneyim-activity-7111396047368650752-ijkP/?originalSubdomain=tr">LinkedIn</a></li>
+    </ul>
+</div>
+<div class="club">
+            <img src="insan.png" alt="İnsan Hakları ve Felsefe Kulübü Logo">
+            <h3>Human Rights and Philosophy Club</h3>
+  <p>Connection Addresses</p>
+    <ul>
+        
+        <li><a href="https://www.instagram.com/khasinsanhaklari/">Instagram</a></li>
+        <li><a href="https://www.linkedin.com/company/kadir-has-%C3%BCniversitesi-i%CC%87nsan-haklar%C4%B1-ve-felsefe-kulub%C3%BC/about/">LinkedIn</a></li>
+    </ul>
+</div>
+    <div class="club">
+            <img src="international.png" alt="International Student Club Logo">
+            <h3>International Student Club</h3>
+      <p>Connection Addresses</p>
+    <ul>
+        <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSc1NuuNA70NYjzam2A1yTOAHEve8JNOsb9erHn6QLmlB5GqNA/viewform">2023-2024 International Student Club Member Form</a></li>
+        <li><a href="https://www.instagram.com/khasintclub/">Instagram</a></li>
+    </ul>
+</div>
+      <div class="club">
+            <img src="isletme.png" alt="İşletme ve Finans Kulübü Logo">
+            <h3>Business and Finance Club</h3>
+        <p>Connection Addresses</p>
+    <ul>
+        <li><a href="https://docs.google.com/forms/d/e/1FAIpQLScr5vdiJf360iuvxf1eM64_8wVWTFzJbJyvuRbRxQriWMlSoQ/viewform">2023-2024 Business and Finance Club Member Form</a></li>
+        <li><a href="https://www.instagram.com/khas.bf.club/">Instagram</a></li>
+        <li><a href="https://www.linkedin.com/company/if-khas/">LinkedIn</a></li>
+        
+    </ul>
+</div>
+<div class="club">
+            <img src="kitap.png" alt="Kitap Kulübü Logo">
+            <h3>Book Club</h3>
+   <p>Connection Addresses</p>
+    <ul>
+        
+        <li><a href="https://www.instagram.com/khasbookclub/">Instagram</a></li>
+        <li><a href="https://www.linkedin.com/company/khasbookclub/?originalSubdomain=tr">LinkedIn</a></li>
+        
+    </ul>
+</div>
+<div class="club">
+            <img src="dans.png" alt="Latin Dansları Kulübü Logo">
+            <h3>Latin Dances Club</h3>
+   <p>Connection Addresses</p>
+    <ul>
+        
+        <li><a href="https://www.instagram.com/hasdans_/">Instagram</a></li>
+        <li><a href="https://twitter.com/hasdans">Twitter</a></li>
+        <li><a href="https://www.facebook.com/hasdans/?locale=tr_TR">FaceBook</a></li>
+        
+    </ul>
+</div>
+<div class="club">
+            <img src="mimarlik.png" alt="Mimarlık Kulübü Logo">
+            <h3>Architecture Club</h3>
+   <p>Connection Addresses</p>
+    <ul>
+        
+        <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSfTekKuFdP1-eH7-5kr23rW3JRGnKDhMv-5MTQ9OY8fD4I1gg/viewform">2023-2024 Architecture Club Member Form</a></li>
+        <li><a href="https://www.instagram.com/khasmimarlikkulubu/">Instagram</a></li>
+        
+        
+    </ul>
+</div>
+<div class="club">
+            <img src="model.png" alt="Model Birleşmiş Milletler Kulübü Logo">
+            <h3>Model United Nations Club (HASMUN)</h3>
+  <p>Connection Addresses</p>
+    <ul>
+        
+        <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSeO1nIFyHIHjYltGBIGNcH53TfQH8vUwdzyMZSF5YRogmpq4A/viewform">2023-2024 Model United Nations Club Member Form</a></li>
+        <li><a href="https://www.hasmun.org/">Official Web Site</a></li>
+        <li><a href="https://www.instagram.com/hasmunclub/">Instagram</a></li>
+        <li><a href="https://twitter.com/hasmunclub">Twitter</a></li>
+        <li><a href="https://www.linkedin.com/company/hasmun/?originalSubdomain=tr">LinkedIn</a></li>
+        
+    </ul>
+</div>
+<div class="club">
+            <img src="muhendislik.png" alt="Mühendislik Kulübü Logo">
+            <h3>Engineering Club</h3>
+   <p>Connection Addresses</p>
+    <ul>
+        
+        
+        <li><a href="https://www.instagram.com/khasengineering/">Instagram</a></li>
+        <li><a href="https://twitter.com/khasmuhendislik?lang=bg">Twitter</a></li>
+        <li><a href="https://www.linkedin.com/company/khasengineering/mycompany/">LinkedIn</a></li>
+        
+    </ul>
+</div>
+<div class="club">
+            <img src="munazara.png" alt="Münazara Kulübü Logo">
+            <h3>Debate Club</h3>
+   <p>Connection Addresses</p>
+    <ul>
+        
+         <li><a href="https://docs.google.com/forms/d/1XJ9BbRmT_aitKCvwYofE3wdZjVZc7-4ShpUuAfib2js/viewform?edit_requested=true">2023-2024 Debate Club Member Form</a></li>
+        <li><a href="https://www.instagram.com/hasmunazara/">Instagram</a></li>
+        <li><a href="https://www.hasmunazara.org/">Official Web Site</a></li>
+        <li><a href="https://www.linkedin.com/company/kadir-has-universitesi-munazara-kulubu/">LinkedIn</a></li>
+        
+    </ul>
+</div>
+<div class="club">
+            <img src="muzik.png" alt="Müzik Kulübü Logo">
+            <h3>Music Club</h3>
+  <p>Connection Addresses</p>
+    <ul>
+        
+        <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSd1vUvQHvfNXHWzFznqSU7SQTh81LqrEnl1nXf2_gD2tSeHsA/viewform">2023-2024 Music Club Member Form</a></li>
+        <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSeHbIE6rPcdSfIQvXexeTgLVhQbcWuksQuVTYKHfCAwIFX6aA/viewform">Music Club Suggestion and Complaint Form</a></li>
+        <li><a href="https://www.instagram.com/khasmuzikkulubu/">Instagram</a></li>
+        
+        
+    </ul>
+</div>
+ <div class="club">
+            <img src="psikoloji.png" alt="Psikoloji Kulübü Logo">
+            <h3>Psychology Club</h3>
+   <p>Connection Addresses</p>
+    <ul>
+        
+        <li><a href="https://docs.google.com/forms/d/e/1FAIpQLScwWTpWaJLXMDMK8qAzj9Hot8mXL0Vxp3bxSW-dofiqcIOX1g/viewform">2023-2024 Psychology Club Member Form</a></li>
+        <li><a href="https://www.instagram.com/khaspsyclub/">Instagram</a></li>
+        <li><a href="https://twitter.com/KHasPsyClub">Twitter</a></li>
+        
+        
+    </ul>
+</div>
+<div class="club">
+            <img src="sanat.png" alt="Sanat Kulübü Logo">
+            <h3>Art Club</h3>
+  <p>Connection Addresses</p>
+    <ul>
+        
+        <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSdSbwXktYWaxRpwe9AGL28x6kqzRcyoJ4O9oRUVU_o7Ml8O6A/viewform">2023-2024 Art Club Member Form</a></li>
+        <li><a href="https://www.instagram.com/khasartclub/">Instagram</a></li>
+        <li><a href="https://chat.whatsapp.com/FyDzrdBUKc1GWbpCdScaxI">WhatsApp Group </a></li>
+        
+        
+    </ul>
+</div>
+<div class="club">
+            <img src="siyaset.png" alt="Siyaset Bilimi ve Uluslararası İlişkiler Kulübü Logo">
+            <h3>Political Science and International Relations Club</h3>
+  <p>Connection Addresses</p>
+    <ul>
+        
+        <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSfOSTpStLVhdKQv4QoFKi84hLxqZHKMKOJMMhHAF4dJyDYzmw/viewform">2023-2024 Political Science and International Relations Club Member Form</a></li>
+        <li><a href="https://www.instagram.com/khas.sibuk/">Instagram</a></li>
+        <li><a href="https://twitter.com/khassibuk">Twitter</a></li>
+        
+        
+    </ul>
+</div>
+<div class="club">
+            <img src="icmimarlık.png" alt="STUDIOHAS - İç Mimarlık Kulübü Logo">
+            <h3>STUDIOHAS - Interior Architecture Club</h3>
+  <p>Connection Addresses</p>
+    <ul>
+        
+        <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSe8e_4zk4dRL9K8hNyg6scWBw6gQiE9tLK8u6nXkQ0GmFKaQQ/viewform?vc=0&c=0&w=1&flr=0">2023-2024 STUDIOHAS - Interior Architecture Club Member Form</a></li>
+        <li><a href="https://www.instagram.com/studiohas_/">Instagram</a></li>
+        <li><a href="https://twitter.com/studio19khas">Twitter</a></li>
+      <li><a href="https://www.linkedin.com/company/studiohas-i%CC%87%C3%A7-mimarl%C4%B1k-kul%C3%BCb%C3%BC/">LinkedIn</a></li>
+        
+        
+    </ul>
+</div>
+<div class="club">
+            <img src="tiyatro.png" alt="Tiyatro Topluluğu Logo">
+            <h3>Theater Club</h3>
+  <p>Connection Addresses</p>
+    <ul>
+        
+        <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSeUGRlmzG1rJPlrZ56JaG40VoE0Jv9BjkSVyOOkIwfh2rtN_A/closedform">2023-2024 Theater Club Member Form</a></li>
+        <li><a href="https://www.instagram.com/khas_tt/">Instagram</a></li>
+        <li><a href="https://twitter.com/KHASTT">Twitter</a></li>
+        <li><a href="https://www.facebook.com/khastt/?locale=tr_TR">FaceBook</a></li>
+        
+        
+    </ul>
+</div>
+<div class="club">
+            <img src="yelken.png" alt="Yelken Kulübü Logo">
+            <h3>Sailing Club</h3>
+   <p>Connection Addresses</p>
+    <ul>
+        
+        <li><a href="https://www.instagram.com/khasyelken/">Instagram</a></li>
+        <li><a href="https://twitter.com/khasyelken">Twitter</a></li>
+        <li><a href="https://www.facebook.com/khasyelken/">FaceBook</a></li>
+        
+        
+    </ul>
+</div>
+ <div class="club">
+            <img src="mis.png" alt="Yönetim Bilişim Sistemleri Logo">
+            <h3>Management Information Systems Club</h3>
+   <p>Connection Addresses</p>
+    <ul>
+        
+        <li><a href="https://www.instagram.com/ybkhas/">Instagram</a></li>
+        <li><a href="https://www.linkedin.com/company/y%C3%B6netim-ve-bili%C5%9Fim-kul%C3%BCb%C3%BC/about/">LinkedIn</a></li>
+        
+        
+    </ul>
+</div>
+<div class="club">
+            <img src="fotograf.png" alt="Fotoğrafçılık Kulübü Logo">
+            <h3>Photography Club</h3>
+   <p>Connection Addresses</p>
+    <ul>
+        
+        <li><a href="https://forms.office.com/pages/responsepage.aspx?id=sg_q8jR9v06eU2TsQSiNu0BRtYe4ODVAp0Nxjt5cziVUOTlKRUdFUTFLOEZMSFRJVFNYMEs2MVc2Ti4u">2023-2024 Photography Club Member Form</a></li>
+        <li><a href="https://www.instagram.com/khasfk/">Instagram</a></li>
+        
+    </ul>
+</div>
+<!-- Footer Section -->
+<footer>
+    <p>You can click on the link of the club you are interested in to find out what you want to know about the clubs. Enjoyable Socials!</p>
+    <p>&copy; 2024 Kadir Has University. All rights reserved.</p>
+</footer>
+ 
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kadir Has University Clubs Partnership</title>
+    <style>
+        body {
+            font-family: "arial", Times, serif;
+            margin: 0;
+            padding: 0;
+            background-color: #001f3f; /* Dark Blue */
+            color: #fff; /* White text */
+            text-align: center;
+        }
+
+        header {
+            background-color: #001f3f; /* Dark Blue */
+            color: white;
+            text-align: center;
+            padding: 12px;
+        }
+
+        section {
+            margin: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: left;
+        }
+
+        footer {
+            padding: 10px;
+            background-color: #001f3f; /* Dark Blue */
+            color: white;
+        }
+
+        .event {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .event img {
+            width: 35%; /* Görsel boyutu düzenlendi */
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .event .overlay {
+            position: relative;
+            text-align: left;
+            padding: 10px;
+            background-color: rgba(0, 0, 0, 0.5); /* Yarı saydam siyah arka plan */
+            color: #fff;
+            font-size: 3.8em; /* Yazı boyutu artırıldı */
+            border-radius: 8px;
+            margin-top: -50px; /* Görselin üst kısmına taşınması */
+            z-index: 1;
+        }
+
+        .collaboration-box {
+            background-color: dark blue
+            border-radius: 8px;
+            padding: 5px;
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .collaboration-box input,
+        .collaboration-box textarea {
+            width: 150%;
+            margin-bottom: 10px;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .collaboration-box button {
+            background-color: white
+            color: dark blue;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+<!-- Header Section -->
+<header>
+    <h1>Kadir Has University Clubs Partnership</h1>
+</header>
+
+<!-- İşbirlikleri -->
+<section>
+    <div class="event">
+        <h2>KHAS Clubs Association and Student Council - Winter Festival</h2>
+        <p>The magnificent Winter Festival organized by KHAS Clubs Association and Student Council in cooperation with IBB Culture!...</p>
+        <img src="kis_festivali.jpg" alt="Kış Festivali">
+    </div>
+
+    <div class="event">
+        <h2>5 December 2023 - Polisan Home Cosmetics Sponsorship Collaboration</h2>
+        <p>A few photos from the event organized in collaboration with Polisan Home Cosmetics and KHAS Architecture Club on December 5, 2023...</p>
+        <img src="polisan1.jpg" alt="Polisan Home İş Birliği">
+        <img src="polisan2.jpg" alt="Polisan Home İş Birliği">
+        <img src="polisan3.jpg" alt="Polisan Home İş Birliği">
+    </div>
+
+    <div class="event">
+        <h2>CooKhas and SineGastro Event Collaboration</h2>
+        <p>A delicious event accompanied by Sinegastro!</p>
+        <img src="sinegastro1.jpg" alt="CooKhas ve SineGastro İş Birliği">
+         <img src="sinegastro2.jpg" alt="CooKhas ve SineGastro İş Birliği">
+    </div>
+
+    <div class="event">
+        <h2>Haschain and KuCoin Collaboration - Blockchain Decoding</h2>
+        <p>The Blockchain Decoding event organized in cooperation with Haschain and KuCoin will be held with the participation of KuCoin Research Expert Şimal Hazal Sarıözen!</p>
+        <img src="blockchain.jpg" alt="Haschain ve KuCoin İş Birliği - Blockchain Decoding">
+    </div>
+  
+</section>
+
+<!-- İş Birliği Kutusu -->
+<div class="collaboration-box">
+    <h2>Come on, if you want to increase your club activity and expand your social network, send an offer!</h2>
+    <form>
+        <label for="socialMedia">Your Club's Social Media Accounts:</label>
+        <input type="text" id="socialMedia" name="socialMedia" required>
+
+        <label for="email">Your Club's E-mail Address:</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="phone">Contact number of your club:</label>
+        <input type="tel" id="phone" name="phone" required>
+
+        <label for="collaborationEvent">Event or Sponsorship with which you would like to cooperate:</label>
+        <input type="text" id="collaborationEvent" name="collaborationEvent" required>
+
+        <label for="targetClub">Club or Company with which you would like to establish cooperation:</label>
+        <input type="text" id="targetClub" name="targetClub" required>
+
+        <button type="submit">Send</button>
+    </form>
+</div>
+
+<!-- Footer Section -->
+<footer>
+    <p>&copy; 2024 Kadir Has University. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Feedback</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .feedback-container {
+      background-color: #fff;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 400px;
+      text-align: center;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: darkblue;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+      <header>
+        <img src="kadir_logo.png" alt="Kadir Has Üniversitesi Logo" style="width:300px;height:100px;" >
+        <h1>Kadir Has University Clubs</h1>
+        
+<header>
+        <a href="file:///C:/Users/PC/OneDrive/Masa%C3%BCst%C3%BC/m%C4%B1s203webpage/foto/home.html#home" id="homeButton">
+            <button>
+                <span class="icon">&#8962;</span>
+                Home Page
+            </button>
+        </a>
+    </header>
+<div class="feedback-container">
+  <h2>Student Feedback</h2>
+  <form id="feedbackForm">
+    <label for="request">Requests</label>
+    <textarea id="request" placeholder="Enter your request"></textarea>
+
+    <label for="expectation">Suggestions</label>
+    <textarea id="expectation" placeholder="Enter your suggestions"></textarea>
+
+    <label for="complaint">Complaints</label>
+    <textarea id="complaint" placeholder="Enter your complaints"></textarea>
+
+    <button type="button" onclick="submitFeedback()">Submit Feedback</button>
+  </form>
+</div>
+
+<script>
+  
+  function submitFeedback() {
+    var request = document.getElementById('request').value;
+    var expectation = document.getElementById('expectation').value;
+    var complaint = document.getElementById('complaint').value;
+
+    console.log('Requests:', request);
+    console.log('Expectations:', expectation);
+    console.log('Complaint:', complaint);
+
+    alert('Feedback submitted successfully!');
+  }
+</script>
+
+</body>
+</html>
